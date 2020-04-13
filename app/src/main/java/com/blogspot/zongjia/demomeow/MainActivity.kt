@@ -1,4 +1,4 @@
-package com.blogspot.zongjia.demomeow.presentation.main
+package com.blogspot.zongjia.demomeow
 
 import android.os.Bundle
 import android.view.View

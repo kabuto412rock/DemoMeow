@@ -1,4 +1,4 @@
-package com.blogspot.zongjia.demomeow
+package com.blogspot.zongjia.demomeow.presentation.main
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,8 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.blogspot.zongjia.demomeow.presentation.main.MainViewModel
+import com.blogspot.zongjia.demomeow.R
 import com.blogspot.zongjia.demomeow.presentation.main.adapter.CatAdapter
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -66,9 +67,13 @@ class MainFragment : Fragment() {
         viewModel.showError.observe(viewLifecycleOwner, Observer{ showError ->
             Toast.makeText(this.activity, showError, Toast.LENGTH_SHORT).show()
         })
-//        viewModel.navigateToDetail.observe(viewLifecycleOwner, Observer {imageUrl ->
-//            if (imageUrl != null) startActivity(DetailActivity.getStartIntent(this, imageUrl))
-//        })
+        viewModel.navigateToDetail.observe(viewLifecycleOwner, Observer {imageUrl ->
+            if (imageUrl != null) {
+//                val action =
+                val action = MainFragmentDirections.actionMainFragmentToCatDetailFragment(imageUrl)
+                findNavController().navigate(action)
+            }
+        })
         // TODO:: 導覽到下一個Detail Fragment
         viewModel.loadCats()
 

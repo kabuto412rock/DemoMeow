@@ -7,8 +7,21 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.blogspot.zongjia.demomeow.MainFragment"
+        android:name="com.blogspot.zongjia.demomeow.presentation.main.MainFragment"
         android:label="fragment_main"
 
-        tools:layout="@layout/fragment_main" />
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_catDetailFragment"
+            app:destination="@id/catDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/catDetailFragment"
+        android:name="com.blogspot.zongjia.demomeow.presentation.detail.CatDetailFragment"
+        android:label="fragment_cat_detail"
+        tools:layout="@layout/fragment_cat_detail" >
+        <argument
+            android:name="imageUrl"
+            app:argType="string" />
+    </fragment>
 </navigation>

@@ -21,7 +21,5 @@ class DetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
-        val imageUrl = intent.getStringExtra(EXTRA_CAT_IMAGE_URL)
-        detailCatImage.loadImage(imageUrl)
     }
 }
