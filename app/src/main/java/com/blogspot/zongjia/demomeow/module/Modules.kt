@@ -1,5 +1,6 @@
 package com.blogspot.zongjia.demomeow.module
 
+import com.blogspot.zongjia.demomeow.BuildConfig
 import com.blogspot.zongjia.demomeow.data.remote.CatApi
 import com.blogspot.zongjia.demomeow.data.repositories.CatRepository
 import com.blogspot.zongjia.demomeow.data.repositories.CatRepositoryImpl
@@ -9,13 +10,12 @@ import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterF
 import okhttp3.OkHttpClient
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
-import retrofit2.CallAdapter
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-const val CAT_API_BASE_URL = "https://thecatapi.com/v1/"
+const val CAT_API_BASE_URL = "https://api.thecatapi.com/"
 
 var appModules = module {
     // The retrofit service using our custom HTTP client instance as a singleton
@@ -43,6 +43,7 @@ fun createHttpClient (): OkHttpClient {
         val original = it.request()
         val requestBuilder = original.newBuilder()
         requestBuilder.header("Content-Type", "application/json")
+        requestBuilder.header("x-api-key", BuildConfig.CAT_API_KEY)
         val request = requestBuilder.method(original.method(), original.body()).build()
         return@addInterceptor it.proceed(request)
     }.build()
@@ -50,7 +51,7 @@ fun createHttpClient (): OkHttpClient {
 /* function to build our Retrofit service */
 inline fun <reified T> createWebService(
     okHttpClient: OkHttpClient,
-    factory: CallAdapter.Factory, baseUrl: String
+    factory: RxJava2CallAdapterFactory, baseUrl: String
 ): T {
     val retrofit = Retrofit.Builder()
         .baseUrl(baseUrl)

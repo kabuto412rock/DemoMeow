@@ -8,7 +8,8 @@ import retrofit2.http.Query
 // REST interface of Cat
 interface CatApi {
 //  取得Cat列表的API，limit是要求的Cat個數
-    @GET("images/search")
+    @GET("v1/images/search")
+
     fun getCats(@Query("limit") limit: Int)
     :Deferred<List<Cat>>
 }

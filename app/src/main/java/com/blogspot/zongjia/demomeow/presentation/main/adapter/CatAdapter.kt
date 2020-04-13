@@ -1,4 +1,4 @@
-package com.blogspot.zongjia.demomeow.presentation.adapter
+package com.blogspot.zongjia.demomeow.presentation.main.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,19 +7,26 @@ import androidx.recyclerview.widget.RecyclerView
 import com.blogspot.zongjia.demomeow.R
 import com.blogspot.zongjia.demomeow.data.entities.Cat
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.item_cat.view.*
 import kotlin.properties.Delegates
 
-class CatAdapter: RecyclerView.Adapter<CatAdapter.CatViewHolder>() {
+class CatAdapter(val onCatClicked: ((String) -> Unit)): RecyclerView.Adapter<CatAdapter.CatViewHolder>() {
     // Our data list is going to be notified when we assign a new list of data to it
     private var catList: List<Cat> by Delegates.observable(emptyList()) {
         _, _, _ -> notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CatAdapter.CatViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CatViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val view = inflater.inflate(R.layout.item_cat, parent, false)
-        return CatViewHolder(view)
+        val holder = CatViewHolder(view)
+        holder.itemView.setOnClickListener {
+            if (holder.adapterPosition != RecyclerView.NO_POSITION) {
+                onCatClicked.invoke(catList[holder.adapterPosition].imageUrl)
+            }
+        }
+        return holder
     }
 
     override fun getItemCount(): Int = catList.size
@@ -35,13 +42,17 @@ class CatAdapter: RecyclerView.Adapter<CatAdapter.CatViewHolder>() {
         catList = newCatList
     }
     class CatViewHolder( itemView: View): RecyclerView.ViewHolder(itemView) {
+        companion object{
+            val requestOptions = RequestOptions().centerCrop()
+        }
         fun bind(cat: Cat) {
             // Load images using Glide library
             Glide.with(itemView.context)
                 .load(cat.imageUrl)
-//                .centerCrop()
+                .apply(requestOptions)// it's centerCrop()
                 .thumbnail()
                 .into(itemView.itemCatImageView)
         }
+
     }
 }

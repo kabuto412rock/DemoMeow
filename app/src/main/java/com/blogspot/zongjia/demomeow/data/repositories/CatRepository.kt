@@ -23,6 +23,7 @@ class CatRepositoryImpl(private val catApi: CatApi):
             val result = catApi.getCats(limit= NUMBERS_OF_CAT).await()
             UseCaseResult.Success(result)
         }catch (e: Exception) {
+            print("CatAPI發出例外:"+ e )
             UseCaseResult.Error(e)
         }
     }

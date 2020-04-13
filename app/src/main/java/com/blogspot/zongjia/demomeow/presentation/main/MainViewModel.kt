@@ -18,6 +18,7 @@ class MainViewModel(private val catRepository: CatRepository) : ViewModel(), Cor
     val showLoading = MutableLiveData<Boolean>()
     val catsList = MutableLiveData<List<Cat>>()
     val showError = SingleLiveEvent<String>()
+    val navigateToDetail = SingleLiveEvent<String>()
 
     fun loadCats() {
         // Show progressBar during the operation on the MAIN (default) thread
@@ -36,7 +37,9 @@ class MainViewModel(private val catRepository: CatRepository) : ViewModel(), Cor
 
         }
     }
-
+    fun catClicked(imageUrl: String) {
+        navigateToDetail.value = imageUrl
+    }
     override fun onCleared() {
         super.onCleared()
         // Clear our job when the linked activity is destroyed to avoid memory leaks
