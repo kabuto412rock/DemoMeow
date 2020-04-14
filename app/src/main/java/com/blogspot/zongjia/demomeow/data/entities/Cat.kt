@@ -4,13 +4,13 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
-@Entity
+@Entity(tableName = "cats")
 data class Cat(
     @PrimaryKey
     @SerializedName("id")
     val id: String,
 
-    @ColumnInfo(name="img_url")
+    @ColumnInfo(name="imgUrl")
     @SerializedName("url")
     val imageUrl: String
 )

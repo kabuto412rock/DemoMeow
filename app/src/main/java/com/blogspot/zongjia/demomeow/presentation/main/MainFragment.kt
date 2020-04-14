@@ -87,10 +87,10 @@ class MainFragment : Fragment() {
         viewModel.showError.observe(viewLifecycleOwner, Observer{ showError ->
             Toast.makeText(this.activity, showError, Toast.LENGTH_SHORT).show()
         })
-        viewModel.navigateToDetail.observe(viewLifecycleOwner, Observer {cat ->
+        viewModel.navigateToDetail.observe(viewLifecycleOwner, Observer {cat: Cat ->
             if (cat != null) {
                 // 帶著 imageUrl 導覽到下一個Detail Fragment
-                val action = MainFragmentDirections.actionMainFragmentToCatDetailFragment(catId = cat.id, imageUrl = cat.imageUrl)
+                val action = MainFragmentDirections.actionMainFragmentToCatDetailFragment(catId = cat.id?: "", imageUrl = cat.imageUrl ?: "")
                 findNavController().navigate(action)
             }
         })

@@ -1,9 +1,14 @@
 package com.blogspot.zongjia.demomeow.module
 
+import androidx.room.Room
 import com.blogspot.zongjia.demomeow.BuildConfig
+import com.blogspot.zongjia.demomeow.data.database.AppDatabase
 import com.blogspot.zongjia.demomeow.data.remote.CatApi
 import com.blogspot.zongjia.demomeow.data.repositories.CatRepository
 import com.blogspot.zongjia.demomeow.data.repositories.CatRepositoryImpl
+import com.blogspot.zongjia.demomeow.data.repositories.FavoriteCatRepository
+import com.blogspot.zongjia.demomeow.data.repositories.IFavoriteCatRepository
+import com.blogspot.zongjia.demomeow.presentation.detail.CatDetailViewModel
 import com.blogspot.zongjia.demomeow.presentation.main.MainViewModel
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
@@ -30,12 +35,18 @@ var appModules = module {
     factory<CatRepository> {
         CatRepositoryImpl(catApi = get())
     }
-
     // Specific viewModel pattern to tell Koin how to build MainViewModel
     viewModel { MainViewModel(catRepository = get()) }
 
+    single { Room.databaseBuilder(get(), AppDatabase::class.java, "cat_database").build() }
+    single { get<AppDatabase>().catDao() }
+    factory<IFavoriteCatRepository> {
+        FavoriteCatRepository(catDao = get())
+    }
 
+    viewModel {  (catId : String, imgUrl: String) -> CatDetailViewModel(catId, imgUrl, get()) }
 }
+
 /* Returns a custom OkHttpClient instance with interceptor. Used for building Retrofit service */
 fun createHttpClient (): OkHttpClient {
     val client = OkHttpClient.Builder()
