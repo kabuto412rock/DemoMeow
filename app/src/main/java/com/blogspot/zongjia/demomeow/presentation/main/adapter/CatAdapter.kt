@@ -11,7 +11,7 @@ import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.item_cat.view.*
 import kotlin.properties.Delegates
 
-class CatAdapter(val onCatClicked: ((String) -> Unit)): RecyclerView.Adapter<CatAdapter.CatViewHolder>() {
+class CatAdapter(val onCatClicked: ((Cat) -> Unit)): RecyclerView.Adapter<CatAdapter.CatViewHolder>() {
     // Our data list is going to be notified when we assign a new list of data to it
     private var catList: List<Cat> by Delegates.observable(emptyList()) {
         _, _, _ -> notifyDataSetChanged()
@@ -23,7 +23,7 @@ class CatAdapter(val onCatClicked: ((String) -> Unit)): RecyclerView.Adapter<Cat
         val holder = CatViewHolder(view)
         holder.itemView.setOnClickListener {
             if (holder.adapterPosition != RecyclerView.NO_POSITION) {
-                onCatClicked.invoke(catList[holder.adapterPosition].imageUrl)
+                onCatClicked.invoke(catList[holder.adapterPosition])
             }
         }
         return holder

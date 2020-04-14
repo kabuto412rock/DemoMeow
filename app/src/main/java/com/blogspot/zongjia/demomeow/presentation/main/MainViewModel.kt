@@ -1,28 +1,27 @@
 package com.blogspot.zongjia.demomeow.presentation.main
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.blogspot.zongjia.demomeow.data.entities.Cat
 import com.blogspot.zongjia.demomeow.data.repositories.CatRepository
+import com.blogspot.zongjia.demomeow.presentation.base.BaseViewmodel
 import com.blogspot.zongjia.demomeow.util.SingleLiveEvent
 import com.blogspot.zongjia.demomeow.util.UseCaseResult
-import kotlinx.coroutines.*
-import kotlin.coroutines.CoroutineContext
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class MainViewModel(private val catRepository: CatRepository) : ViewModel(), CoroutineScope {
-    // Coroutine's background job
-    private val job = Job()
-    // Define Default thread for Coroutine as Main and add job
-    override val coroutineContext: CoroutineContext = Dispatchers.Main + job
+class MainViewModel(private val catRepository: CatRepository) : BaseViewmodel() {
 
     val showLoading = MutableLiveData<Boolean>()
     val catsList = MutableLiveData<List<Cat>>()
     val showError = SingleLiveEvent<String>()
-    val navigateToDetail = SingleLiveEvent<String>()
+    val navigateToDetail = SingleLiveEvent<Cat>()
     val firstLoadPage = MutableLiveData<Boolean>()
+
     init {
         firstLoadPage.value = true
     }
+
     fun firstLoadOrNot() {
         // 因為firstLoadPage是SingleLiveEvent，所以只有第一次會觸發。
         // 所以底下這行value設為true 或 false其實不影響功能。
@@ -47,12 +46,7 @@ class MainViewModel(private val catRepository: CatRepository) : ViewModel(), Cor
         }
         firstLoadPage.value = false
     }
-    fun catClicked(imageUrl: String) {
-        navigateToDetail.value = imageUrl
-    }
-    override fun onCleared() {
-        super.onCleared()
-        // Clear our job when the linked activity is destroyed to avoid memory leaks
-        job.cancel()
+    fun catClicked(cat: Cat) {
+        navigateToDetail.value = cat
     }
 }

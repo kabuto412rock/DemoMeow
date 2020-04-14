@@ -1,15 +1,14 @@
 package com.blogspot.zongjia.demomeow.presentation.main
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.blogspot.zongjia.demomeow.R
+import com.blogspot.zongjia.demomeow.data.entities.Cat
 import com.blogspot.zongjia.demomeow.presentation.main.adapter.CatAdapter
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -32,11 +31,35 @@ class MainFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_main, container, false)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.main_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.main_menu_action_refresh -> {
+                viewModel.loadCats()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // 初始化RecyclerView的Adapter
+        initCatAdapter()
+        // Initiate the observer on viewModel fields and then starts the API request
+        initViewModel()
+    }
+    private fun initCatAdapter() {
         // The click listener for displaying a cat image in detail activity
-        val onCatClicked: (imageUrl: String )-> Unit =  {imageUrl->
-            viewModel.catClicked(imageUrl)
+        val onCatClicked: (cat: Cat )-> Unit =  {cat->
+            viewModel.catClicked(cat)
         }
         // Instantiate our custom Adapter
         catAdapter = CatAdapter(onCatClicked)
@@ -48,10 +71,7 @@ class MainFragment : Fragment() {
             )
             adapter = catAdapter
         }
-        // Initiate the observer on viewModel fields and then starts the API request
-        initViewModel()
     }
-
     private fun initViewModel() {
         // 觀察catList和當取得新CatList回報時更新adapter
         viewModel.catsList.observe(viewLifecycleOwner, Observer {newCatsList ->
@@ -67,10 +87,10 @@ class MainFragment : Fragment() {
         viewModel.showError.observe(viewLifecycleOwner, Observer{ showError ->
             Toast.makeText(this.activity, showError, Toast.LENGTH_SHORT).show()
         })
-        viewModel.navigateToDetail.observe(viewLifecycleOwner, Observer {imageUrl ->
-            if (imageUrl != null) {
+        viewModel.navigateToDetail.observe(viewLifecycleOwner, Observer {cat ->
+            if (cat != null) {
                 // 帶著 imageUrl 導覽到下一個Detail Fragment
-                val action = MainFragmentDirections.actionMainFragmentToCatDetailFragment(imageUrl)
+                val action = MainFragmentDirections.actionMainFragmentToCatDetailFragment(catId = cat.id, imageUrl = cat.imageUrl)
                 findNavController().navigate(action)
             }
         })
@@ -78,5 +98,7 @@ class MainFragment : Fragment() {
         // 避免翻轉時就發送Cat Api的請求，而導致catList變動。
         viewModel.firstLoadOrNot()
     }
+
+
 
 }

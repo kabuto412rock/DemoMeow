@@ -34,6 +34,7 @@ var appModules = module {
     // Specific viewModel pattern to tell Koin how to build MainViewModel
     viewModel { MainViewModel(catRepository = get()) }
 
+
 }
 /* Returns a custom OkHttpClient instance with interceptor. Used for building Retrofit service */
 fun createHttpClient (): OkHttpClient {
