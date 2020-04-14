@@ -69,14 +69,14 @@ class MainFragment : Fragment() {
         })
         viewModel.navigateToDetail.observe(viewLifecycleOwner, Observer {imageUrl ->
             if (imageUrl != null) {
-//                val action =
+                // 帶著 imageUrl 導覽到下一個Detail Fragment
                 val action = MainFragmentDirections.actionMainFragmentToCatDetailFragment(imageUrl)
                 findNavController().navigate(action)
             }
         })
-        // TODO:: 導覽到下一個Detail Fragment
-        viewModel.loadCats()
-
+        // 只有viewModel建立開始，第一次執行會導致loadCats()
+        // 避免翻轉時就發送Cat Api的請求，而導致catList變動。
+        viewModel.firstLoadOrNot()
     }
 
 }

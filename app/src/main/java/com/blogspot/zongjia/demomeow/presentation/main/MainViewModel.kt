@@ -19,7 +19,17 @@ class MainViewModel(private val catRepository: CatRepository) : ViewModel(), Cor
     val catsList = MutableLiveData<List<Cat>>()
     val showError = SingleLiveEvent<String>()
     val navigateToDetail = SingleLiveEvent<String>()
-
+    val firstLoadPage = MutableLiveData<Boolean>()
+    init {
+        firstLoadPage.value = true
+    }
+    fun firstLoadOrNot() {
+        // 因為firstLoadPage是SingleLiveEvent，所以只有第一次會觸發。
+        // 所以底下這行value設為true 或 false其實不影響功能。
+        if (firstLoadPage.value == true) {
+            loadCats()
+        }
+    }
     fun loadCats() {
         // Show progressBar during the operation on the MAIN (default) thread
         showLoading.value = true
@@ -34,8 +44,8 @@ class MainViewModel(private val catRepository: CatRepository) : ViewModel(), Cor
                 is UseCaseResult.Success -> catsList.value = result.data
                 is UseCaseResult.Error -> showError.value = result.exception.message
             }
-
         }
+        firstLoadPage.value = false
     }
     fun catClicked(imageUrl: String) {
         navigateToDetail.value = imageUrl
