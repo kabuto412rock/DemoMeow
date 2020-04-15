@@ -45,7 +45,7 @@ class CatDetailViewModel(val catId: String, val imgUrl: String, private val repo
             }
             ))
         }else {
-            // 刪除一個
+            // 刪除一個2
             compositeDisposables.add(repository.delete(cat).subscribe({
                 Log.d("clickLike", "Delete Complete")
             },{

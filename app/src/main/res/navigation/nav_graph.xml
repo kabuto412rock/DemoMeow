@@ -37,6 +37,10 @@
     <fragment
         android:id="@+id/favoriteCatFragment"
         android:name="com.blogspot.zongjia.demomeow.presentation.favorites.FavoriteCatFragment"
-        android:label="@string/收藏"
-        tools:layout="@layout/fragment_favorite_cat" />
+        android:label="@string/fragment_favorite_cats"
+        tools:layout="@layout/fragment_favorite_cat" >
+        <action
+            android:id="@+id/action_favoriteCatFragment_to_catDetailFragment"
+            app:destination="@id/catDetailFragment" />
+    </fragment>
 </navigation>

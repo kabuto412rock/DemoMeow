@@ -7,5 +7,5 @@
     <string name="fragment_cat_detail_label">貓圖</string>
     <string name="refresh_menu_button_label">重新整理</string>
     <string name="share">分享</string>
-    <string name="收藏" />
+    <string name="fragment_favorite_cats">收藏</string>
 </resources>

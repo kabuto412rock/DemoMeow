@@ -11,7 +11,7 @@ import io.reactivex.schedulers.Schedulers
 
 class FavoriteCatsViewModel(private val catRepository: IFavoriteCatRepository) : ViewModel() {
     var compositeDisposables: CompositeDisposable = CompositeDisposable()
-
+    val navigateToDetail =  SingleLiveEvent<Cat>()
     val showLoading = MutableLiveData<Boolean>()
     val catsList = MutableLiveData<List<Cat>>()
     val showError = SingleLiveEvent<String>()
@@ -38,6 +38,7 @@ class FavoriteCatsViewModel(private val catRepository: IFavoriteCatRepository) :
                 .subscribe({
                 if (it != null) {
                     catsList.value = it
+                    showLoading.value = false
                 }
             },{
                 showError.value = it.message
@@ -46,7 +47,8 @@ class FavoriteCatsViewModel(private val catRepository: IFavoriteCatRepository) :
         firstLoadPage.value = false
     }
     fun catClicked(cat: Cat) {
-        // 暫時不回應點擊
+        // TODO::點擊後開啟新的detail
+        navigateToDetail.value = cat
     }
 
     override fun onCleared() {

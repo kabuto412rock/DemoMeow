@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.blogspot.zongjia.demomeow.R
 import com.blogspot.zongjia.demomeow.data.entities.Cat
@@ -68,6 +69,13 @@ class FavoriteCatFragment : Fragment() {
         // 當showError值變動時，，使用Toast顯示錯誤訊息!
         viewModel.showError.observe(viewLifecycleOwner, Observer{ showError ->
             Toast.makeText(this.activity, showError, Toast.LENGTH_SHORT).show()
+        })
+        viewModel.navigateToDetail.observe(viewLifecycleOwner, Observer {cat: Cat ->
+            if (cat != null) {
+                // 帶著 imageUrl 導覽到下一個Detail Fragment
+                val action = FavoriteCatFragmentDirections.actionFavoriteCatFragmentToCatDetailFragment(catId = cat.id?: "", imageUrl = cat.imageUrl ?: "")
+                findNavController().navigate(action)
+            }
         })
         // 只有viewModel建立開始，第一次執行會導致loadCats()
         // 避免翻轉時就發送Cat Api的請求，而導致catList變動。
