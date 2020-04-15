@@ -9,6 +9,7 @@ import com.blogspot.zongjia.demomeow.data.repositories.CatRepositoryImpl
 import com.blogspot.zongjia.demomeow.data.repositories.FavoriteCatRepository
 import com.blogspot.zongjia.demomeow.data.repositories.IFavoriteCatRepository
 import com.blogspot.zongjia.demomeow.presentation.detail.CatDetailViewModel
+import com.blogspot.zongjia.demomeow.presentation.favorites.FavoriteCatsViewModel
 import com.blogspot.zongjia.demomeow.presentation.main.MainViewModel
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
@@ -45,6 +46,7 @@ var appModules = module {
     }
 
     viewModel {  (catId : String, imgUrl: String) -> CatDetailViewModel(catId, imgUrl, get()) }
+    viewModel { FavoriteCatsViewModel(catRepository = get()) }
 }
 
 /* Returns a custom OkHttpClient instance with interceptor. Used for building Retrofit service */

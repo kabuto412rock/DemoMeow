@@ -16,6 +16,8 @@ class MainViewModel(private val catRepository: CatRepository) : BaseViewmodel() 
     val catsList = MutableLiveData<List<Cat>>()
     val showError = SingleLiveEvent<String>()
     val navigateToDetail = SingleLiveEvent<Cat>()
+    val navigateToFavorites = SingleLiveEvent<Boolean>()
+
     val firstLoadPage = MutableLiveData<Boolean>()
 
     init {
@@ -48,5 +50,8 @@ class MainViewModel(private val catRepository: CatRepository) : BaseViewmodel() 
     }
     fun catClicked(cat: Cat) {
         navigateToDetail.value = cat
+    }
+    fun goToFavoritesPage(){
+        navigateToFavorites.value = true
     }
 }

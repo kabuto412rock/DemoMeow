@@ -15,9 +15,6 @@ class CatDetailViewModel(val catId: String, val imgUrl: String, private val repo
     private val cat: Cat
     init {
         cat = Cat(catId, imgUrl)
-//        val flowable = repository.getOne(catId=cat.id)
-//            .subscribeOn(Schedulers.io())
-//            .observeOn(AndroidSchedulers.mainThread())
 
         compositeDisposables.add(repository.getOne(catId = cat.id)
             .subscribeOn(Schedulers.io())
