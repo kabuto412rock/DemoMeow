@@ -28,6 +28,10 @@ class FavoriteCatFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.favoiretes_menu, menu)
         menuActionClear = menu.findItem(R.id.favorites_menu_action_clear)
+        menuActionClear?.also {
+            // 當catsList數量不為零時顯示"清空"的menuItem，反之為零食隱藏menuItem
+            it.isVisible = viewModel.catsList.value?.size != 0
+        }
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -85,15 +89,19 @@ class FavoriteCatFragment : Fragment() {
             if (newCatsList.isEmpty()) {
                 // 如果貓咪數量為空，隱藏menuItem"清空" 不提供用戶清空收藏
                 // 因為這邊有可能menuActionClear變為null，無法設定隱藏，所以layout預設就是隱藏emptyCatImage
-                if (menuActionClear?.isVisible == true) menuActionClear?.isVisible = false
+                menuActionClear?.also {item ->
+                    // 如果item正在顯示，則觸發無效化當前options menu，重新設定
+                    if (item.isVisible) activity?.invalidateOptionsMenu()
+                }
                 // 隱藏 收藏貓咪列表
                 catsRecyclerView.visibility = View.INVISIBLE
                 // 顯示 沒有貓咪時的照片
                 emptyCatImageView.visibility = View.VISIBLE
             }else {
                 // 如果貓咪數量不為空，則顯示menuItem"清空" 提供用戶清空收藏
-                if (menuActionClear != null && (menuActionClear?.isVisible == false)){
-                    menuActionClear?.isVisible = true
+                menuActionClear?.also {item ->
+                    // 如果item正在顯示，則觸發無效化當前options menu，重新設定
+                    if (!item.isVisible) activity?.invalidateOptionsMenu()
                 }
                 // 顯示 收藏貓咪列表
                 catsRecyclerView.visibility = View.VISIBLE
