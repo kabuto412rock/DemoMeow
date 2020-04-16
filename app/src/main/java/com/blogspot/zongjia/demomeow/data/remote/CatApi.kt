@@ -11,5 +11,4 @@ interface CatApi {
     @GET("v1/images/search")
     fun getCats(@Query("limit") limit: Int, @Query("mime_types") type: String = "jpg")
     :Deferred<List<Cat>>
-
 }

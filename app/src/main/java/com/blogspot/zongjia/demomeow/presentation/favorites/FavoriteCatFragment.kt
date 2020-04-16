@@ -1,9 +1,7 @@
 package com.blogspot.zongjia.demomeow.presentation.favorites
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -22,12 +20,31 @@ class FavoriteCatFragment : Fragment() {
     // Instantiate viewModel with Koin
     private val viewModel: FavoriteCatsViewModel by viewModel()
     private lateinit var catAdapter : CatAdapter
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.favoiretes_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.favorites_menu_action_clear -> {
+                viewModel.clearCats()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_favorite_cat, container, false)
     }
 

@@ -23,4 +23,9 @@ interface CatDao {
     // 在資料表刪除一隻貓
     @Delete
     fun delete(cat: Cat): Completable
+
+    //
+    @Query("Delete FROM cats")
+    fun deleteAll(): Completable
+
 }

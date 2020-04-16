@@ -17,6 +17,8 @@ interface IFavoriteCatRepository {
     fun insert(cat: Cat): Completable
 
     fun delete(cat: Cat): Completable
+
+    fun deleteAll(): Completable
 }
 
 class FavoriteCatRepository(private val catDao: CatDao) : IFavoriteCatRepository {
@@ -35,6 +37,11 @@ class FavoriteCatRepository(private val catDao: CatDao) : IFavoriteCatRepository
         return catDao.delete(cat)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+    }
 
+    override fun deleteAll(): Completable {
+        return catDao.deleteAll()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
     }
 }

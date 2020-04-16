@@ -1,5 +1,6 @@
 package com.blogspot.zongjia.demomeow.presentation.favorites
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.blogspot.zongjia.demomeow.data.entities.Cat
@@ -10,16 +11,25 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
 class FavoriteCatsViewModel(private val catRepository: IFavoriteCatRepository) : ViewModel() {
+    // 回收所以使用Rxjava的殘渣Disposables
     var compositeDisposables: CompositeDisposable = CompositeDisposable()
+
+    // 判斷是否導向 DetailFragment的狀態，單次觸發
     val navigateToDetail =  SingleLiveEvent<Cat>()
-    val showLoading = MutableLiveData<Boolean>()
-    val catsList = MutableLiveData<List<Cat>>()
-    val showError = SingleLiveEvent<String>()
+    // 判斷是否為第一次載入的狀態
     val firstLoadPage = MutableLiveData<Boolean>()
+    // 判斷是否要顯示 正在載入的 的狀態
+    val showLoading = MutableLiveData<Boolean>()
+    // 貓咪列表
+    val catsList = MutableLiveData<List<Cat>>()
+    // 如果錯誤=>顯示錯誤內容的字串，單次觸發
+    val showError = SingleLiveEvent<String>()
 
     init {
+        // 當第一次ViewModel被建立，設為第一次載入的狀態
         firstLoadPage.value = true
     }
+
     fun firstLoadOrNot() {
         // 因為firstLoadPage是SingleLiveEvent，所以只有第一次會觸發。
         // 所以底下這行value設為true 或 false其實不影響功能。
@@ -27,6 +37,7 @@ class FavoriteCatsViewModel(private val catRepository: IFavoriteCatRepository) :
             loadCats()
         }
     }
+
     fun loadCats() {
         // Show progressBar during the operation on the MAIN (default) thread
         showLoading.value = true
@@ -45,6 +56,18 @@ class FavoriteCatsViewModel(private val catRepository: IFavoriteCatRepository) :
             })
         )
         firstLoadPage.value = false
+    }
+    fun confirmClearCats() {
+
+    }
+    fun clearCats() {
+        showLoading.value = true
+        compositeDisposables.add(
+            catRepository.deleteAll()
+                .subscribe {
+                    Log.d("clearCats", "清除所有收藏的貓")
+                }
+        )
     }
     fun catClicked(cat: Cat) {
         // TODO::點擊後開啟新的detail

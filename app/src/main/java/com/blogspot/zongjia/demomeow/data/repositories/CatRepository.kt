@@ -3,7 +3,6 @@ package com.blogspot.zongjia.demomeow.data.repositories
 import com.blogspot.zongjia.demomeow.data.entities.Cat
 import com.blogspot.zongjia.demomeow.data.remote.CatApi
 import com.blogspot.zongjia.demomeow.util.UseCaseResult
-import java.lang.Exception
 
 // 我們想要的貓咪數量
 const val NUMBERS_OF_CAT = 25
