@@ -22,10 +22,12 @@ import org.koin.android.viewmodel.ext.android.viewModel
 class FavoriteCatFragment : Fragment() {
     // Instantiate viewModel with Koin
     private val viewModel: FavoriteCatsViewModel by viewModel()
-
+    private var menuActionClear: MenuItem? = null
     private lateinit var catAdapter : CatAdapter
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.favoiretes_menu, menu)
+        menuActionClear = menu.findItem(R.id.favorites_menu_action_clear)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -48,7 +50,6 @@ class FavoriteCatFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-
         return inflater.inflate(R.layout.fragment_favorite_cat, container, false)
     }
 
@@ -80,6 +81,25 @@ class FavoriteCatFragment : Fragment() {
         // 觀察catList和當取得新CatList回報時更新adapter
         viewModel.catsList.observe(viewLifecycleOwner, Observer { newCatsList ->
             catAdapter.updateData(newCatsList)
+            // TODO::如果為空值，將recycler view隱藏，顯示沒收藏貓咪的圖片，以及menuItem"清空" 要隱藏。
+            if (newCatsList.isEmpty()) {
+                // 如果貓咪數量為空，隱藏menuItem"清空" 不提供用戶清空收藏
+                // 因為這邊有可能menuActionClear變為null，無法設定隱藏，所以layout預設就是隱藏emptyCatImage
+                if (menuActionClear?.isVisible == true) menuActionClear?.isVisible = false
+                // 隱藏 收藏貓咪列表
+                catsRecyclerView.visibility = View.INVISIBLE
+                // 顯示 沒有貓咪時的照片
+                emptyCatImageView.visibility = View.VISIBLE
+            }else {
+                // 如果貓咪數量不為空，則顯示menuItem"清空" 提供用戶清空收藏
+                if (menuActionClear != null && (menuActionClear?.isVisible == false)){
+                    menuActionClear?.isVisible = true
+                }
+                // 顯示 收藏貓咪列表
+                catsRecyclerView.visibility = View.VISIBLE
+                // 隱藏 沒有貓咪時的照片
+                emptyCatImageView.visibility = View.INVISIBLE
+            }
         })
 
         // 當showLoading的值為true時顯示ProgressBar，值為false時隱藏ProgressBar
@@ -102,9 +122,8 @@ class FavoriteCatFragment : Fragment() {
         // 當showClearConfirmDialog觸發時，跳出DialogClearConfirmFragment
         viewModel.showClearConfirmDialog.observe(viewLifecycleOwner, Observer {
             if (it != null) {
-                val ft: FragmentTransaction = childFragmentManager!!.beginTransaction()
-                val prev =
-                    fragmentManager!!.findFragmentByTag("dialog")
+                val ft: FragmentTransaction = childFragmentManager.beginTransaction()
+                val prev = childFragmentManager.findFragmentByTag("dialog")
                 if (prev != null) {
                     ft.remove(prev)
                 }

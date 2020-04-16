@@ -6,5 +6,6 @@
         android:id="@+id/favorites_menu_action_clear"
         android:icon="@drawable/ic_clear_black_24dp"
         android:title="@string/favorites_menu_action_clear"
+        android:visible="false"
         app:showAsAction="always"/>
 </menu>
