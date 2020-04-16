@@ -9,4 +9,6 @@
     <string name="share">分享</string>
     <string name="fragment_favorite_cats">收藏</string>
     <string name="favorites_menu_action_clear">清空</string>
+    <string name="clear_dialog_descritption">"是否要清空收藏內所有的貓？ "</string>
+    <string name="cant_reback_warning"> (警告：無法復原上一步!!)</string>
 </resources>

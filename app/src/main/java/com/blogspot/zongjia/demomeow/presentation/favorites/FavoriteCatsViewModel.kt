@@ -18,8 +18,10 @@ class FavoriteCatsViewModel(private val catRepository: IFavoriteCatRepository) :
     val navigateToDetail =  SingleLiveEvent<Cat>()
     // 判斷是否為第一次載入的狀態
     val firstLoadPage = MutableLiveData<Boolean>()
-    // 判斷是否要顯示 正在載入的 的狀態
+    // 判斷是否要顯示 正在載入的(旋轉圖標) 的狀態
     val showLoading = MutableLiveData<Boolean>()
+    // 判斷是否要顯示
+
     // 貓咪列表
     val catsList = MutableLiveData<List<Cat>>()
     // 如果錯誤=>顯示錯誤內容的字串，單次觸發
