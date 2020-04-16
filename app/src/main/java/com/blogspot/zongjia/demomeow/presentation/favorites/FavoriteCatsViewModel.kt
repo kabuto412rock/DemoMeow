@@ -24,6 +24,7 @@ class FavoriteCatsViewModel(private val catRepository: IFavoriteCatRepository) :
     val catsList = MutableLiveData<List<Cat>>()
     // 如果錯誤=>顯示錯誤內容的字串，單次觸發
     val showError = SingleLiveEvent<String>()
+    val showClearConfirmDialog = SingleLiveEvent<Boolean>()
 
     init {
         // 當第一次ViewModel被建立，設為第一次載入的狀態
@@ -57,8 +58,8 @@ class FavoriteCatsViewModel(private val catRepository: IFavoriteCatRepository) :
         )
         firstLoadPage.value = false
     }
-    fun confirmClearCats() {
-
+    fun showClearCatDialog() {
+        showClearConfirmDialog.value = true
     }
     fun clearCats() {
         showLoading.value = true
@@ -66,6 +67,7 @@ class FavoriteCatsViewModel(private val catRepository: IFavoriteCatRepository) :
             catRepository.deleteAll()
                 .subscribe {
                     Log.d("clearCats", "清除所有收藏的貓")
+                    showLoading.value = false
                 }
         )
     }
