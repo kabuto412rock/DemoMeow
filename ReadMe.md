@@ -28,8 +28,10 @@ $ git clone https://github.com/kabuto412rock/DemoMeow.git
 catApiKey="<--Your theCatApi's token-->"
 ```
 ![put theCatApi key in the file called local.properties][add_api_key_img]
-2. Maybe you will rebuild and  and "invalidate restart" in your Android Studio.
+2. Maybe you will rebuild and  and "invalidate restart" in your Android Studio.  
+
 ---
+
 1. 使用Git克隆我的專案，以及別忘記將TheCatApi的Key放到Android專案的檔案"local.properties"
 ```bash
 $ git clone https://github.com/kabuto412rock/DemoMeow.git 
