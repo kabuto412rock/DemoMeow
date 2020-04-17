@@ -61,11 +61,12 @@ class CatDetailFragment : Fragment() {
     private fun initViewModel() {
 
         viewModel.likeThisCat.observe(viewLifecycleOwner, Observer {
-            // TODO:: show
+            // 當likeThisCat為true時，顯示紅愛心
             if (it == true) {
                 floatLikeButton.setImageDrawable(resources.getDrawable(R.drawable.ic_red_heart, context?.theme
                     ))
             }else if(it == false){
+                // 反之，顯示灰愛心
                 floatLikeButton.setImageDrawable(resources.getDrawable(R.drawable.ic_gray_heart, context?.theme
                 ))
             }

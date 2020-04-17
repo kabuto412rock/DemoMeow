@@ -36,7 +36,7 @@
     </fragment>
     <fragment
         android:id="@+id/favoriteCatFragment"
-        android:name="com.blogspot.zongjia.demomeow.presentation.favorites.FavoriteCatFragment"
+        android:name="com.blogspot.zongjia.demomeow.presentation.favorites.FavoriteCatsFragment"
         android:label="@string/fragment_favorite_cats"
         tools:layout="@layout/fragment_favorite_cat" >
         <action

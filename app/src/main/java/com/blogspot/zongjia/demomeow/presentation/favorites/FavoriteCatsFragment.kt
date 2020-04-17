@@ -19,7 +19,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 /**
  * A simple [Fragment] subclass.
  */
-class FavoriteCatFragment : Fragment() {
+class FavoriteCatsFragment : Fragment() {
     // Instantiate viewModel with Koin
     private val viewModel: FavoriteCatsViewModel by viewModel()
     private var menuActionClear: MenuItem? = null
@@ -29,7 +29,7 @@ class FavoriteCatFragment : Fragment() {
         inflater.inflate(R.menu.favoiretes_menu, menu)
         menuActionClear = menu.findItem(R.id.favorites_menu_action_clear)
         menuActionClear?.also {
-            // 當catsList數量不為零時顯示"清空"的menuItem，反之為零食隱藏menuItem
+            // 當catsList數量不為0則顯示"清空"的menuItem，反之為0則隱藏menuItem
             it.isVisible = viewModel.catsList.value?.size != 0
         }
         super.onCreateOptionsMenu(menu, inflater)
@@ -76,7 +76,7 @@ class FavoriteCatFragment : Fragment() {
         catsRecyclerView.apply {
             // Displaying data in a Grid design
             layoutManager = LinearLayoutManager(
-                this@FavoriteCatFragment.context
+                this@FavoriteCatsFragment.context
             )
             adapter = catAdapter
         }
@@ -85,12 +85,11 @@ class FavoriteCatFragment : Fragment() {
         // 觀察catList和當取得新CatList回報時更新adapter
         viewModel.catsList.observe(viewLifecycleOwner, Observer { newCatsList ->
             catAdapter.updateData(newCatsList)
-            // TODO::如果為空值，將recycler view隱藏，顯示沒收藏貓咪的圖片，以及menuItem"清空" 要隱藏。
+            // 如果貓咪數量為空時
             if (newCatsList.isEmpty()) {
-                // 如果貓咪數量為空，隱藏menuItem"清空" 不提供用戶清空收藏
-                // 因為這邊有可能menuActionClear變為null，無法設定隱藏，所以layout預設就是隱藏emptyCatImage
                 menuActionClear?.also {item ->
-                    // 如果item正在顯示，則觸發無效化當前options menu，重新設定
+                    // 如果貓咪數量為空且menuItem "清空"正在顯示時，
+                    // 觸發無效化當前options menu，該函數會自動觸發onCreateOptionsMenu一遍。
                     if (item.isVisible) activity?.invalidateOptionsMenu()
                 }
                 // 隱藏 收藏貓咪列表
@@ -98,9 +97,9 @@ class FavoriteCatFragment : Fragment() {
                 // 顯示 沒有貓咪時的照片
                 emptyCatImageView.visibility = View.VISIBLE
             }else {
-                // 如果貓咪數量不為空，則顯示menuItem"清空" 提供用戶清空收藏
                 menuActionClear?.also {item ->
-                    // 如果item正在顯示，則觸發無效化當前options menu，重新設定
+                    // 如果貓咪數量不為空，則顯示menuItem"清空" 提供用戶清空收藏
+                    // 如果item正在隱藏，則觸發無效化當前options menu。(本來就顯示則忽略)
                     if (!item.isVisible) activity?.invalidateOptionsMenu()
                 }
                 // 顯示 收藏貓咪列表
@@ -121,11 +120,9 @@ class FavoriteCatFragment : Fragment() {
         })
         // 當navigateToDetail觸發時，將導覽到CatDetailFragment
         viewModel.navigateToDetail.observe(viewLifecycleOwner, Observer {cat: Cat ->
-            if (cat != null) {
-                // 帶著 imageUrl 導覽到下一個Detail Fragment
-                val action = FavoriteCatFragmentDirections.actionFavoriteCatFragmentToCatDetailFragment(catId = cat.id?: "", imageUrl = cat.imageUrl ?: "")
-                findNavController().navigate(action)
-            }
+            // 帶著 imageUrl 導覽到下一個Detail Fragment
+            val action = FavoriteCatsFragmentDirections.actionFavoriteCatFragmentToCatDetailFragment(catId = cat.id, imageUrl = cat.imageUrl)
+            findNavController().navigate(action)
         })
         // 當showClearConfirmDialog觸發時，跳出DialogClearConfirmFragment
         viewModel.showClearConfirmDialog.observe(viewLifecycleOwner, Observer {

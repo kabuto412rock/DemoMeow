@@ -74,7 +74,7 @@ class FavoriteCatsViewModel(private val catRepository: IFavoriteCatRepository) :
         )
     }
     fun catClicked(cat: Cat) {
-        // TODO::點擊後開啟新的detail
+        // 點擊後開啟新的detail fragment
         navigateToDetail.value = cat
     }
 

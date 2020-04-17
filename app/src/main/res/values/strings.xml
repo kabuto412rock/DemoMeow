@@ -1,13 +1,16 @@
 <resources>
     <string name="app_name">Demo喵喵</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+    <!-- 各fragment的標題名稱 -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="fragment_main_label">主頁</string>
     <string name="fragment_cat_detail_label">貓圖</string>
+    <!-- menuItem的label名稱 -->
     <string name="refresh_menu_button_label">重新整理</string>
     <string name="share">分享</string>
     <string name="fragment_favorite_cats">收藏</string>
+
+    <!-- FavoriteCatsFragment的Dialog，確認是否要清空的dialog內容-->
     <string name="favorites_menu_action_clear">清空</string>
     <string name="clear_dialog_descritption">"是否要清空收藏內所有的貓？ "</string>
     <string name="cant_reback_warning"> (警告：無法復原上一步!!)</string>
