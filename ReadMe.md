@@ -20,20 +20,27 @@
 3. 放大觀看你可愛的喵貓圖
 ## Requirement
 
-### 1. Git clone my project and don't forget to insert TheCatApi's key to the file "local.properties"。
+1. Git clone my project and don't forget to insert TheCatApi's key to the file "local.properties"。
 ```bash
-$ git clone 
+$ git clone https://github.com/kabuto412rock/DemoMeow.git 
 ```
 ```c
 catApiKey="<--Your theCatApi's token-->"
 ```
-### 2. Maybe you will rebuild and  and "invalidate restart" in your Android Studio.
+![put theCatApi key in the file called local.properties][add_api_key_img]
+2. Maybe you will rebuild and  and "invalidate restart" in your Android Studio.
 ---
-### 1. 使用Git克隆我的專案，以及別忘記將TheCatApi的Key放到Android專案的檔案"local.properties"
+1. 使用Git克隆我的專案，以及別忘記將TheCatApi的Key放到Android專案的檔案"local.properties"
 ```bash
-$ git clone 
+$ git clone https://github.com/kabuto412rock/DemoMeow.git 
 ```
 ```c
 catApiKey="<--Your theCatApi's token-->"
 ```
-### 2.可能你會需要rebuild你的專案，保險點你需要"invalidate restart"你的Android Studio。
+![put theCatApi key in the file called local.properties][add_api_key_img]
+2.可能你會需要rebuild你的專案，保險點你需要"invalidate restart"你的Android Studio。
+
+## Demo
+[![Demo影片](https://img.youtube.com/vi/EyM_O9qgbd0/0.jpg)](https://youtu.be/EyM_O9qgbd0)
+
+[add_api_key_img]: ./README_ASSETS/add_you_api_token.png "add key in the file called local.properties"
