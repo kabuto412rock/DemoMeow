@@ -1,9 +1,10 @@
 # DemoMeow(Demo喵喵)
-## Declarement
-
+## Description
+ Watch cat on the Android phone.
  The cat pictures come from  [TheCatAPI](https://thecatapi.com/) (it's easy to sign up and get the token.\)
  This app based on [this Medium Article](https://medium.com/@gunayadem.dev/boost-your-android-apps-with-koin-and-coroutines-using-mvvm-in-kotlin-d30fe436ab4c) written by [Adem Gunay](https://github.com/ademgunay/)
  
+ 觀看貓圖在你的Android手機上。
  App的貓圖都是從[TheCatAPI](https://thecatapi.com/)取得的。
  此App是基於AdemGunay撰寫的Medium文章去進行擴展。
 
