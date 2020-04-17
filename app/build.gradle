@@ -71,6 +71,8 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.4.0'
     kapt 'com.github.bumptech.glide:compiler:4.4.0'
 
+    // PhotoView by chrisbanes, thanks for your amazing 3rd library.
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
 
 // Retrofit as our REST service
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
