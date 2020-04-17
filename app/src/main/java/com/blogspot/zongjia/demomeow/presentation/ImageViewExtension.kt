@@ -8,6 +8,6 @@ fun ImageView.loadImage(imageUrl: String ) {
 
     Glide.with(this)
         .load(imageUrl)
-        .apply(RequestOptions().centerCrop())
+        .apply(RequestOptions().fitCenter())
         .into(this)
 }

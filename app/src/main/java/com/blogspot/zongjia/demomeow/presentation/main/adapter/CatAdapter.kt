@@ -46,10 +46,13 @@ class CatAdapter(val onCatClicked: ((Cat) -> Unit)): RecyclerView.Adapter<CatAda
             val requestOptions = RequestOptions().centerCrop()
         }
         fun bind(cat: Cat) {
+
             // Load images using Glide library
             Glide.with(itemView.context)
                 .load(cat.imageUrl)
-                .apply(RequestOptions.placeholderOf(R.drawable.ic_starge_cat))
+                .apply (
+                    RequestOptions.placeholderOf(R.drawable.ic_strange_cat)
+                    )
                 .apply(requestOptions)// it's centerCrop()
                 .thumbnail()
                 .into(itemView.itemCatImageView)
