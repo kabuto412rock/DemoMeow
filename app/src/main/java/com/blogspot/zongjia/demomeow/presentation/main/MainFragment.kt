@@ -54,12 +54,18 @@ class MainFragment : Fragment() {
         }
         return super.onOptionsItemSelected(item)
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // 初始化RecyclerView的Adapter
-        initCatAdapter()
         // Initiate the observer on viewModel fields and then starts the API request
         initViewModel()
+
+        // 初始化RecyclerView的Adapter
+        initCatAdapter()
+
+        swipeRefreshLayout.setOnRefreshListener {
+            viewModel.loadCats()
+        }
     }
     private fun initCatAdapter() {
         // The click listener for displaying a cat image in detail activity
@@ -85,7 +91,8 @@ class MainFragment : Fragment() {
 
         // 當showLoading的值為true時顯示ProgressBar，值為false時隱藏ProgressBar
         viewModel.showLoading.observe(viewLifecycleOwner, Observer {showLoading ->
-            mainProgressBar.visibility = if (showLoading) View.VISIBLE else View.GONE
+//            mainProgressBar.visibility = if (showLoading) View.VISIBLE else View.GONE
+            swipeRefreshLayout.isRefreshing = showLoading
         })
 
         // 當showError值變動時，，使用Toast顯示錯誤訊息!

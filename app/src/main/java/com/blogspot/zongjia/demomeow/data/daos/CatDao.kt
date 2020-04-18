@@ -9,7 +9,7 @@ import io.reactivex.Observable
 @Dao
 interface CatDao {
     // 查詢所有在資料表的貓
-    @Query("SELECT * FROM cats")
+    @Query("SELECT * FROM cats ORDER BY id")
     fun getAllCats(): Observable<List<Cat>>
 
     // 查詢一隻id為 <catId>的貓

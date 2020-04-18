@@ -73,6 +73,22 @@ class FavoriteCatsViewModel(private val catRepository: IFavoriteCatRepository) :
                 }
         )
     }
+    fun removeCat(cat: Cat) {
+        compositeDisposables.add(
+            catRepository.delete(cat)
+                .subscribe {
+                    Log.d("clearCats", "清除一隻id為${cat.id}的貓")
+                }
+        )
+    }
+    fun insertCat(cat: Cat) {
+        compositeDisposables.add(catRepository.insert(cat).subscribe({
+            Log.d("insertCat", "Insert Complete")
+        },{
+            Log.d("insertCat", "Insert Fail")
+        }
+        ))
+    }
     fun catClicked(cat: Cat) {
         // 點擊後開啟新的detail fragment
         navigateToDetail.value = cat

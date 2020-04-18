@@ -1,5 +1,6 @@
 package com.blogspot.zongjia.demomeow.presentation.favorites
 
+import android.graphics.Canvas
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
@@ -7,11 +8,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.blogspot.zongjia.demomeow.R
 import com.blogspot.zongjia.demomeow.data.entities.Cat
+import com.blogspot.zongjia.demomeow.presentation.favorites.adapter.FavoriteCatsAdapter
 import com.blogspot.zongjia.demomeow.presentation.favorites.dialogs.DialogClearConfirmFragment
-import com.blogspot.zongjia.demomeow.presentation.main.adapter.CatAdapter
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_favorite_cat.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -23,7 +27,58 @@ class FavoriteCatsFragment : Fragment() {
     // Instantiate viewModel with Koin
     private val viewModel: FavoriteCatsViewModel by viewModel()
     private var menuActionClear: MenuItem? = null
-    private lateinit var catAdapter : CatAdapter
+    private lateinit var catAdapter : FavoriteCatsAdapter
+    private var deleteCat: Cat? = null
+    private val simpleCallback =
+        object : ItemTouchHelper.SimpleCallback(
+            0, ItemTouchHelper.LEFT
+    ) {
+        override fun onMove(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder
+        ): Boolean {
+            return false
+        }
+
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+            val position = viewHolder.adapterPosition
+            when(direction) {
+                // 當手指往左滑 <-<-
+                ItemTouchHelper.LEFT -> {
+                    viewModel.catsList.value?.get(position)?.also {cat ->
+                        deleteCat = cat
+                        viewModel.removeCat(cat)
+//                        catAdapter.notifyItemRemoved(position)
+                        Snackbar.make(catsRecyclerView, "你刪除了貓${cat.id}", Snackbar.LENGTH_LONG)
+                            .setAction("復原"){
+                                viewModel.insertCat(cat)
+                            }.show()
+                    }
+                }
+            }
+        }
+
+            override fun onChildDraw(
+                c: Canvas,
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                dX: Float,
+                dY: Float,
+                actionState: Int,
+                isCurrentlyActive: Boolean
+            ) {
+                super.onChildDraw(
+                    c,
+                    recyclerView,
+                    viewHolder,
+                    dX,
+                    dY,
+                    actionState,
+                    isCurrentlyActive
+                )
+            }
+    }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.favoiretes_menu, menu)
@@ -71,8 +126,12 @@ class FavoriteCatsFragment : Fragment() {
         val onCatClicked: (cat: Cat)-> Unit =  { cat->
             viewModel.catClicked(cat)
         }
+        // 初始化RecyclerView需要的SwipeItemHelper
+        val itemTouchHelper = ItemTouchHelper(simpleCallback)
+        itemTouchHelper.attachToRecyclerView(catsRecyclerView)
+
         // Instantiate our custom Adapter
-        catAdapter = CatAdapter(onCatClicked)
+        catAdapter = FavoriteCatsAdapter(onCatClicked)
         catsRecyclerView.apply {
             // Displaying data in a Grid design
             layoutManager = LinearLayoutManager(
@@ -80,6 +139,7 @@ class FavoriteCatsFragment : Fragment() {
             )
             adapter = catAdapter
         }
+
     }
     private fun initViewModel() {
         // 觀察catList和當取得新CatList回報時更新adapter

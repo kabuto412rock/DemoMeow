@@ -1,4 +1,4 @@
-package com.blogspot.zongjia.demomeow.presentation.main.adapter
+package com.blogspot.zongjia.demomeow.presentation.favorites.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -11,10 +11,10 @@ import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.item_cat.view.*
 import kotlin.properties.Delegates
 
-class CatAdapter(val onCatClicked: ((Cat) -> Unit)): RecyclerView.Adapter<CatAdapter.CatViewHolder>() {
+class FavoriteCatsAdapter(val onCatClicked: ((Cat) -> Unit)): RecyclerView.Adapter<FavoriteCatsAdapter.CatViewHolder>() {
     // Our data list is going to be notified when we assign a new list of data to it
     private var catList: List<Cat> by Delegates.observable(emptyList()) {
-        _, _, _ -> notifyDataSetChanged()
+            _, _, _ -> notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CatViewHolder {
@@ -32,7 +32,7 @@ class CatAdapter(val onCatClicked: ((Cat) -> Unit)): RecyclerView.Adapter<CatAda
 
     override fun getItemCount(): Int = catList.size
 
-    override fun onBindViewHolder(holder: CatAdapter.CatViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: CatViewHolder, position: Int) {
         if (position != RecyclerView.NO_POSITION) {
             val cat = catList[position]
             holder.bind(cat)
@@ -53,7 +53,7 @@ class CatAdapter(val onCatClicked: ((Cat) -> Unit)): RecyclerView.Adapter<CatAda
                 .load(cat.imageUrl)
                 .apply (
                     RequestOptions.placeholderOf(R.drawable.ic_strange_cat)
-                    )
+                )
                 .apply(requestOptions)// it's centerCrop()
                 .thumbnail()
                 .into(itemView.itemCatImageView)
