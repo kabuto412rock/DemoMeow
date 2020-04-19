@@ -43,6 +43,7 @@ catApiKey="<--Your theCatApi's token-->"
 2.可能你會需要rebuild你的專案，保險點你需要"invalidate restart"你的Android Studio。
 
 ## Demo
-[![Demo影片](https://img.youtube.com/vi/EyM_O9qgbd0/0.jpg)](https://youtu.be/EyM_O9qgbd0)
+[![Demo影片](https://img.youtube.com/vi/-bSHeIGkfM0/0.jpg)](https://youtu.be/-bSHeIGkfM0)
+
 
 [add_api_key_img]: ./README_ASSETS/add_you_api_token.png "add key in the file called local.properties"
